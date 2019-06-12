@@ -36,7 +36,7 @@ public class User {
             e.printStackTrace();
         }
 
-        System.out.println("BetaKey >> Player created");
+        System.out.println("TwitterBot >> Player created");
 
     }
 

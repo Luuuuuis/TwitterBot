@@ -67,14 +67,14 @@ public class handler {
 
                                 if (ids.length % 100 == 0) {
                                     Twitterbot.twitter.updateStatus(Twitterbot.config.getFollow100()
-                                            .replace("%USER", screenName)
+                                            .replace("%USER", "@" + screenName)
                                             .replace("%FOLLOWERS", "" + ids.length));
                                     System.out.println("New follower: " + screenName);
                                     return;
                                 }
 
                                 Twitterbot.twitter.updateStatus(Twitterbot.config.getFollow()
-                                        .replace("%USER", screenName)
+                                        .replace("%USER", "@" + screenName)
                                         .replace("%FOLLOWERS", "" + ids.length));
                                 System.out.println("New follower: " + screenName);
                             }
