@@ -19,5 +19,5 @@ If you want to greet every new follower with a nice message, then this is the pe
 8. Get followers 🤯
 
 ### Issues
-If you have any trouble installing my bot, you can either join [my Discord](https://discord.gg/https://discord.gg/wKuHFWa) or create an issue on GitHub.
+If you have any trouble installing my bot, you can either join [my Discord](https://discord.gg/https://discord.gg/wKuHFWa) or create an [issue on GitHub](https://github.com/Luuuuuis/TwitterBot/issues/new/choose).
  
