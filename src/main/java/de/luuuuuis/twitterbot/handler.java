@@ -89,6 +89,6 @@ public class handler {
                 System.out.println("Total followers: " + Twitterbot.followers.size());
 
             }
-        }, 5 * 60 * 1000, 5 * 60 * 1000);
+        }, 10 * 60 * 1000, 10 * 60 * 1000);
     }
 }
