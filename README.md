@@ -4,9 +4,9 @@ Greet your new followers nicely 🙋‍♂️
 If you want to greet every new follower with a nice message, then this is the perfect bot for you!
 
 ### Requirements
-* Twitter Developer account
+* [Twitter Developer](https://developer.twitter.com/en/apply-for-access) account
 * An (Twitter)App for the Bot [create an app](https://developer.twitter.com/en/apps/create)
-* Any kind of server that is running 24/7
+* Any kind of server that is running 24/7. Check out our Partner [KernelHost](https://www.kernelhost.de/)
 
 ### Installation
 1. Download the jar file from [releases](https://github.com/Luuuuuis/TwitterBot/releases)
