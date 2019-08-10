@@ -1,7 +1,8 @@
 # TwitterBot
-Greet your new followers nicely 🙋‍♂️
+Welcome your new followers 🙋
 
-If you want to greet every new follower with a nice message, then this is the perfect bot for you!
+If you want to give a warm handshake to your just gained follower with a nice little message then this bot is the perfect solution for you!
+
 
 ### Requirements
 * [Twitter Developer](https://developer.twitter.com/en/apply-for-access) account
