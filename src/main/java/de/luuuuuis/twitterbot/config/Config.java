@@ -1,119 +1,49 @@
 package de.luuuuuis.twitterbot.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.common.collect.Maps;
+import de.luuuuuis.twitterbot.Main;
+import lombok.Getter;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Objects;
 
+@Getter
 public class Config {
 
-    private HashMap<String, Object> Keys = new HashMap<>();
-    private String follow;
-    private String follow100;
-    private String unfollow;
+    @Getter
+    private static Config instance;
 
-    public Config() {
-        query();
+    private final String follow;
+    private final String follow100;
+    private final String unfollow;
+    private final Map<String, Object> tokens = Maps.newHashMap();
+
+    public Config(String follow, String follow100, String unfollow) {
+        this.follow = follow;
+        this.follow100 = follow100;
+        this.unfollow = unfollow;
     }
 
-
-    private void query() {
-        Thread thread = new Thread(() -> {
-
-            try {
-
-                File f = new File(System.getProperty("java.class.path"));
-                File dir = f.getAbsoluteFile().getParentFile();
-                String currentFile = dir.toString() + "/";
-
-                System.out.println("Current File: " + currentFile);
-
-                File file = new File(currentFile + "config.json");
-
-
-                if (!file.exists()) {
-
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    try (FileWriter fileWriter = new FileWriter(currentFile + "config.json")) {
-
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("follow", "%USER follows now! We are now %FOLLOWERS!");
-                        jsonObject.put("follow100", "%USER follows now! We reached %FOLLOWERS!");
-                        jsonObject.put("unfollow", "%USER unfollowed! :( Only %FOLLOWERS followers left.");
-
-                        JSONObject Tokens = new JSONObject();
-                        Tokens.put("OAuthConsumerKey", "123456789");
-                        Tokens.put("OAuthConsumerSecret", "123456789");
-                        Tokens.put("OAuthAccessToken", "123456789");
-                        Tokens.put("OAuthAccessTokenSecret", "123456789");
-                        jsonObject.put("tokens", Tokens);
-
-                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-                        fileWriter.write(gson.toJson(jsonObject));
-                        fileWriter.flush();
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-
-                }
-
-
-                Object object = new JSONParser().parse(new FileReader(currentFile + "config.json"));
-                JSONObject jsonObject = (JSONObject) object;
-
-                follow = jsonObject.get("follow").toString();
-                follow100 = jsonObject.get("follow100").toString();
-                unfollow = jsonObject.get("unfollow").toString();
-
-                Map TokensJSON = (Map) jsonObject.get("tokens");
-                for (Object o : TokensJSON.entrySet()) {
-                    Map.Entry pair = (Map.Entry) o;
-                    Keys.put(pair.getKey().toString(), pair.getValue());
-                }
-
-            } catch (IOException | ParseException e) {
-                e.printStackTrace();
-            }
-
-        });
-        thread.start();
+    public static void init() {
         try {
-            thread.join();
-        } catch (InterruptedException e) {
+            String path = System.getProperty("user.dir") + "/config.json";
+            if (Files.notExists(Paths.get(path))) {
+                InputStream in = Main.class.getClassLoader().getResourceAsStream("config.json");
+                Files.copy(Objects.requireNonNull(in), Paths.get(path));
+                instance = Main.GSON.fromJson(new InputStreamReader(in), Config.class);
+            } else {
+                instance = Main.GSON.fromJson(new FileReader(path), Config.class);
+            }
+        } catch (IOException e) {
+            instance = new Config("Follow-Defauöt", "Follow-100-Default", "Unfollow-Default");
             e.printStackTrace();
         }
-    }
-
-    public HashMap<String, Object> getKeys() {
-        return Keys;
-    }
-
-    public String getFollow() {
-        return follow;
-    }
-
-    public String getFollow100() {
-        return follow100;
-    }
-
-    public String getUnfollow() {
-        return unfollow;
+        System.out.println("Config initialized");
     }
 }

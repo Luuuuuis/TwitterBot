@@ -4,10 +4,9 @@ import java.sql.*;
 
 public class DBManager {
 
-    public static Connection connection;
+    static Connection connection;
 
     public static void init() {
-
         String url = "jdbc:sqlite:TwitterDB.sqlite";
         try {
             Class.forName("org.sqlite.JDBC");

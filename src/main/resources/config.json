@@ -1,0 +1,11 @@
+{
+  "follow": "%USER follows now! We are now %FOLLOWERS!",
+  "follow100": "%USER follows now! We reached %FOLLOWERS!",
+  "unfollow": "%USER unfollowed! :( Only %FOLLOWERS followers left.",
+  "tokens": {
+    "OAuthConsumerKey": "123456789",
+    "OAuthConsumerSecret": "123456789",
+    "OAuthAccessToken": "123456789",
+    "OAuthAccessTokenSecret": "123456789"
+  }
+}

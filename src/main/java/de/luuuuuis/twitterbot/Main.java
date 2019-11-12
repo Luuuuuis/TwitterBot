@@ -1,14 +1,18 @@
 package de.luuuuuis.twitterbot;
 
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.luuuuuis.twitterbot.config.Config;
 import de.luuuuuis.twitterbot.database.DBManager;
+import lombok.Getter;
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Luuuuuis
@@ -17,36 +21,32 @@ import java.util.ArrayList;
  * Date: 12.03.2019
  * Time 16:25
  */
-public class Twitterbot {
 
-    public static ArrayList<Long> followers = new ArrayList<>();
+public class Main {
 
-    public static Twitter twitter;
-    public static Config config;
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    @Getter
+    private static final List<Long> followers = Lists.newArrayList();
 
-    public static void main(String[] args) {
+    @Getter
+    private static Twitter twitter;
 
+    public static void main(String... args) {
         DBManager.init();
-        config = new Config();
-
-        System.out.println("Your Keys:" +
-                "\nOAuthConsumerKey: " + config.getKeys().get("OAuthConsumerKey").toString() +
-                "\nOAuthConsumerSecret: " + config.getKeys().get("OAuthConsumerSecret").toString() +
-                "\nOAuthAccessToken: " + config.getKeys().get("OAuthAccessToken").toString() +
-                "\nOAuthAccessTokenSecret: " + config.getKeys().get("OAuthAccessTokenSecret").toString());
-
+        Config.init();
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
+        Config config = Config.getInstance();
         cb.setDebugEnabled(true)
-                .setOAuthConsumerKey(config.getKeys().get("OAuthConsumerKey").toString())
-                .setOAuthConsumerSecret(config.getKeys().get("OAuthConsumerSecret").toString())
-                .setOAuthAccessToken(config.getKeys().get("OAuthAccessToken").toString())
-                .setOAuthAccessTokenSecret(config.getKeys().get("OAuthAccessTokenSecret").toString());
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        twitter = tf.getInstance();
+                .setOAuthConsumerKey(config.getTokens().get("OAuthConsumerKey").toString())
+                .setOAuthConsumerSecret(config.getTokens().get("OAuthConsumerSecret").toString())
+                .setOAuthAccessToken(config.getTokens().get("OAuthAccessToken").toString())
+                .setOAuthAccessTokenSecret(config.getTokens().get("OAuthAccessTokenSecret").toString());
+
+        TwitterFactory factory = new TwitterFactory(cb.build());
+        twitter = factory.getInstance();
 
         try {
-
             String twitterScreenName = twitter.getScreenName();
 
             IDs followerIDs = twitter.getFollowersIDs(twitterScreenName, -1);
@@ -63,8 +63,7 @@ public class Twitterbot {
 
             System.out.println("Total followers: " + followers.size());
 
-            new handler();
-
+            new Handler(twitter);
         } catch (TwitterException e) {
             e.printStackTrace();
         }

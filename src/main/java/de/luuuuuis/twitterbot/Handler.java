@@ -1,10 +1,12 @@
 package de.luuuuuis.twitterbot;
 
+import com.google.common.collect.Lists;
+import de.luuuuuis.twitterbot.config.Config;
 import de.luuuuuis.twitterbot.database.User;
-import twitter4j.IDs;
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,50 +17,45 @@ import java.util.TimerTask;
  * Date: 15.03.2019
  * Time 15:19
  */
-public class handler {
 
-    public handler() {
+class Handler {
+
+    Handler(Twitter twitter) {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-
-                ArrayList<Long> unfollow = new ArrayList<>(Twitterbot.followers);
+                List<Long> unfollow = Lists.newArrayList();
 
                 try {
-                    String twitterScreenName = Twitterbot.twitter.getScreenName();
-
-
-                    IDs followerIDs = Twitterbot.twitter.getFollowersIDs(twitterScreenName, -1);
-                    long[] ids = followerIDs.getIDs();
-
+                    long[] ids = twitter.getFollowersIDs(twitter.getScreenName(), -1).getIDs();
 
                     for (long id : ids) {
-                        twitter4j.User user = Twitterbot.twitter.showUser(id);
+                        twitter4j.User user = twitter.showUser(id);
                         //here i am trying to fetch the followers of each id
                         String screenName = user.getScreenName();
                         System.out.println("Username: " + screenName);
 
                         unfollow.remove(id);
-
                     }
 
                     unfollow.forEach(unfollower -> {
                         try {
-                            Twitterbot.twitter.updateStatus(Twitterbot.config.getUnfollow()
-                                    .replace("%USER", "@" + Twitterbot.twitter.showUser(unfollower).getScreenName())
+                            twitter.updateStatus(Config.getInstance().getUnfollow()
+                                    .replace("%USER", "@" + twitter.showUser(unfollower).getScreenName())
                                     .replace("%FOLLOWERS", "" + ids.length));
-                            Twitterbot.followers.remove(unfollower);
+                            Main.getFollowers().remove(unfollower);
                         } catch (TwitterException e) {
                             e.printStackTrace();
                         }
                     });
 
                     for (long id : ids) {
-                        twitter4j.User user = Twitterbot.twitter.showUser(id);
+                        twitter4j.User user = twitter.showUser(id);
                         String screenName = user.getScreenName();
-                        if (!Twitterbot.followers.contains(id)) {
-                            Twitterbot.followers.add(id);
+
+                        if (!Main.getFollowers().contains(id)) {
+                            Main.getFollowers().add(id);
 
                             if (User.userExists(id)) {
                                 System.out.println("Comeback follower: " + screenName);
@@ -66,14 +63,14 @@ public class handler {
                                 User.create(id, ids.length);
 
                                 if (ids.length % 100 == 0) {
-                                    Twitterbot.twitter.updateStatus(Twitterbot.config.getFollow100()
+                                    twitter.updateStatus(Config.getInstance().getFollow100()
                                             .replace("%USER", "@" + screenName)
                                             .replace("%FOLLOWERS", "" + ids.length));
                                     System.out.println("New follower: " + screenName);
                                     return;
                                 }
 
-                                Twitterbot.twitter.updateStatus(Twitterbot.config.getFollow()
+                                twitter.updateStatus(Config.getInstance().getFollow()
                                         .replace("%USER", "@" + screenName)
                                         .replace("%FOLLOWERS", "" + ids.length));
                                 System.out.println("New follower: " + screenName);
@@ -85,10 +82,8 @@ public class handler {
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("Total followers: " + Twitterbot.followers.size());
-
+                System.out.println("Total followers: " + Main.getFollowers().size());
             }
-        }, 10 * 60 * 1000, 10 * 60 * 1000);
+        }, 600000, 600000);
     }
 }
