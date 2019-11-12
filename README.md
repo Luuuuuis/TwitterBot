@@ -1,12 +1,13 @@
 # TwitterBot
-Greet your new followers nicely 🙋‍♂️
+Welcome your new followers 🙋
 
-If you want to greet every new follower with a nice message, then this is the perfect bot for you!
+If you want to give a warm handshake to your just gained follower with a nice little message then this bot is the perfect solution for you!
+
 
 ### Requirements
-* Twitter Developer account
+* [Twitter Developer](https://developer.twitter.com/en/apply-for-access) account
 * An (Twitter)App for the Bot [create an app](https://developer.twitter.com/en/apps/create)
-* Any kind of server that is running 24/7
+* Any kind of server that is running 24/7. Check out our Partner [KernelHost](https://www.kernelhost.de/)
 
 ### Installation
 1. Download the jar file from [releases](https://github.com/Luuuuuis/TwitterBot/releases)
