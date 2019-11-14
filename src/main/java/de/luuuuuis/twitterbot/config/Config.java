@@ -41,7 +41,7 @@ public class Config {
                 instance = Main.GSON.fromJson(new FileReader(path), Config.class);
             }
         } catch (IOException e) {
-            instance = new Config("Follow-Defauöt", "Follow-100-Default", "Unfollow-Default");
+            instance = new Config("Follow-Default", "Follow-100-Default", "Unfollow-Default");
             e.printStackTrace();
         }
         System.out.println("Config initialized");

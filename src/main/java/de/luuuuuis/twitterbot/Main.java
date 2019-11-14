@@ -4,9 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.luuuuuis.twitterbot.config.Config;
-import de.luuuuuis.twitterbot.database.DBManager;
 import lombok.Getter;
-import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -29,10 +27,17 @@ public class Main {
     private static final List<Long> followers = Lists.newArrayList();
 
     @Getter
+    private static String screen_name;
+
+    @Getter
     private static Twitter twitter;
 
     public static void main(String... args) {
-        DBManager.init();
+        System.out.println("\n\n ______   __     __     __     ______   ______   ______     ______     ______     ______     ______  \n" +
+                "/\\__  _\\ /\\ \\  _ \\ \\   /\\ \\   /\\__  _\\ /\\__  _\\ /\\  ___\\   /\\  == \\   /\\  == \\   /\\  __ \\   /\\__  _\\ \n" +
+                "\\/_/\\ \\/ \\ \\ \\/ \".\\ \\  \\ \\ \\  \\/_/\\ \\/ \\/_/\\ \\/ \\ \\  __\\   \\ \\  __<   \\ \\  __<   \\ \\ \\/\\ \\  \\/_/\\ \\/ \n" +
+                "   \\ \\_\\  \\ \\__/\".~\\_\\  \\ \\_\\    \\ \\_\\    \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_____\\    \\ \\_\\ \n" +
+                "    \\/_/   \\/_/   \\/_/   \\/_/     \\/_/     \\/_/   \\/_____/   \\/_/ /_/   \\/_____/   \\/_____/     \\/_/ \n\n\n" + "by https://twitter.com/realluuuuuis\n");
         Config.init();
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
@@ -46,22 +51,10 @@ public class Main {
         TwitterFactory factory = new TwitterFactory(cb.build());
         twitter = factory.getInstance();
 
+
         try {
-            String twitterScreenName = twitter.getScreenName();
-
-            IDs followerIDs = twitter.getFollowersIDs(twitterScreenName, -1);
-            long[] ids = followerIDs.getIDs();
-            for (long id : ids) {
-                twitter4j.User user = twitter.showUser(id);
-                //here i am trying to fetch the followers of each id
-                System.out.println("Username: " + user.getScreenName());
-
-                if (!followers.contains(id)) {
-                    followers.add(id);
-                }
-            }
-
-            System.out.println("Total followers: " + followers.size());
+            //screen name is @ name without @ ;)
+            screen_name = twitter.getScreenName();
 
             new Handler(twitter);
         } catch (TwitterException e) {
