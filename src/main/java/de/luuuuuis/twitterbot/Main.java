@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.luuuuuis.twitterbot.config.Config;
-import lombok.Getter;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -23,13 +22,8 @@ import java.util.List;
 public class Main {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    @Getter
     private static final List<Long> followers = Lists.newArrayList();
-
-    @Getter
     private static String screen_name;
-
-    @Getter
     private static Twitter twitter;
 
     public static void main(String... args) {
@@ -60,5 +54,21 @@ public class Main {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<Long> getFollowers() {
+        return followers;
+    }
+
+    public static Gson getGSON() {
+        return GSON;
+    }
+
+    public static String getScreen_name() {
+        return screen_name;
+    }
+
+    public static Twitter getTwitter() {
+        return twitter;
     }
 }

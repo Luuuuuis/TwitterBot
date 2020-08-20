@@ -2,7 +2,6 @@ package de.luuuuuis.twitterbot.config;
 
 import com.google.common.collect.Maps;
 import de.luuuuuis.twitterbot.Main;
-import lombok.Getter;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,10 +12,8 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 
-@Getter
 public class Config {
 
-    @Getter
     private static Config instance;
 
     private final String follow;
@@ -45,5 +42,25 @@ public class Config {
             e.printStackTrace();
         }
         System.out.println("Config initialized");
+    }
+
+    public static Config getInstance() {
+        return instance;
+    }
+
+    public String getFollow() {
+        return follow;
+    }
+
+    public String getFollow100() {
+        return follow100;
+    }
+
+    public String getUnfollow() {
+        return unfollow;
+    }
+
+    public Map<String, Object> getTokens() {
+        return tokens;
     }
 }
