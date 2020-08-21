@@ -6,7 +6,7 @@ If you want to give a warm handshake to your just gained follower with a nice li
 
 ### Requirements
 * [Twitter Developer](https://developer.twitter.com/en/apply-for-access) account
-* An (Twitter)App for the Bot [create an app](https://developer.twitter.com/en/apps/create)
+* An (Twitter-)App for the Bot. [Create an app](https://developer.twitter.com/en/apps/create)
 * Any kind of server that is running 24/7. Check out my Partner [KernelHost](https://www.kernelhost.de/)
 
 ### Installation
